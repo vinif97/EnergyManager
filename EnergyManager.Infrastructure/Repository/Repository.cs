@@ -26,11 +26,10 @@ namespace EnergyManager.Infrastructure.Repository
             return entity;
         }
 
-        public virtual async Task<T> DeleteAsync(T entity)
+        public virtual async Task DeleteAsync(T entity)
         {
             _context.Set<T>().Remove(entity);
             await _context.SaveChangesAsync();
-            return entity;
         }
 
         public virtual async Task<IEnumerable<T>> GetAllAsync()

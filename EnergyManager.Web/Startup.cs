@@ -9,6 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using EnergyManager.Application.Profiles;
+using EnergyManager.Application.Interfaces;
+using EnergyManager.Application.Services;
 
 namespace EnergyManager.Web
 {
@@ -34,6 +36,7 @@ namespace EnergyManager.Web
             services.AddControllersWithViews().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
+            services.AddScoped<IEndpointService, EndpointService>();
             services.AddScoped<IEndpointRepository, EndpointRepository>();
 
             services.AddAutoMapper(typeof(DomainToDtoProfile));
