@@ -1,17 +1,17 @@
 ﻿using EnergyManager.Domain.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EnergyManager.Infrastructure.Context.Configuration
 {
-    public class MeterConfiguration : BaseEntityConfiguration<Meter>
+    public class MeterConfiguration : BaseEntityConfiguration<Meter>, IEntityTypeConfiguration<Meter>
     {
-        public MeterConfiguration()
+        public override void Configure(EntityTypeBuilder<Meter> builder)
         {
-            HasKey(m => m.Id);
-            Property(m => m.SerialNumber).IsRequired().HasMaxLength(50);
-            Property(m => m.FirmwareVersion).IsRequired();
+            builder.HasKey(m => m.MeterId);
+            builder.Property(m => m.Number).IsRequired();
+            builder.Property(m => m.FirmwareVersion).IsRequired();
+            base.Configure(builder);
         }
     }
 }

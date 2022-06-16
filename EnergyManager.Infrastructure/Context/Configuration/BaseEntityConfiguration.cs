@@ -1,20 +1,19 @@
 ﻿using EnergyManager.Domain.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.ModelConfiguration;
 using System.Text;
 
 namespace EnergyManager.Infrastructure.Context.Configuration
 {
-    public abstract class BaseEntityConfiguration<TEntity> : EntityTypeConfiguration<TEntity>
+    public abstract class BaseEntityConfiguration<TEntity> : IEntityTypeConfiguration<TEntity>
         where TEntity : BaseEntity
     {
-        protected BaseEntityConfiguration()
+        public virtual void Configure(EntityTypeBuilder<TEntity> builder)
         {
-            Property(a => a.CreatedDate).IsOptional();
-            Property(a => a.ModifiedDate).IsOptional();
-            Property(a => a.DeletedDate).IsOptional();
-            Property(a => a.IsDeleted).IsOptional();
+            builder.Property(a => a.CreatedDate).IsRequired();
+            builder.Property(a => a.ModifiedDate).IsRequired();
         }
     }
 }

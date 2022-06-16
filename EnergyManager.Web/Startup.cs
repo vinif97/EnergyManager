@@ -1,18 +1,14 @@
+using EnergyManager.Domain.Interfaces;
 using EnergyManager.Infrastructure.Context;
+using EnergyManager.Infrastructure.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using EnergyManager.Application.Profiles;
 
 namespace EnergyManager.Web
 {
@@ -25,7 +21,7 @@ namespace EnergyManager.Web
 
         public IConfiguration Configuration { get; }
 
-        
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<EnergyManagerContext>(opt => opt.UseInMemoryDatabase("EnergyManagerDB"));
@@ -34,19 +30,27 @@ namespace EnergyManager.Web
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Landis+Gyr", Version = "v1" });
             });
+
+            services.AddControllersWithViews().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
+            services.AddScoped<IEndpointRepository, EndpointRepository>();
+
+            services.AddAutoMapper(typeof(DomainToDtoProfile));
         }
 
-       
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+            });
+
             if (env.IsDevelopment())
             {
-                app.UseSwagger();
-                app.UseSwaggerUI(c =>
-                {
-                    c.RoutePrefix = String.Empty;
-                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-                });
+
                 app.UseDeveloperExceptionPage();
             }
 
@@ -61,7 +65,7 @@ namespace EnergyManager.Web
                 endpoints.MapControllers();
             });
 
-            
+
         }
     }
 }
