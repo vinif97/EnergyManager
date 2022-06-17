@@ -23,7 +23,7 @@ namespace EnergyManager.Presentation.Views
                 "Edit an existing endpoint (2)\n" +
                 "Delete an existing endpoint (3)\n" +
                 "List all endpoints (4)\n" +
-                "Find and endpoint by your serial number (5)\n" +
+                "Find an endpoint by your serial number (5)\n" +
                 "Exit the program (6)");
 
             string option = Console.ReadLine();
@@ -93,9 +93,9 @@ namespace EnergyManager.Presentation.Views
 
         private async Task ListAllEndpoints()
         {
-            var response = await HttpService.GetAllEndpoints();
+            var response = await HttpService.GetAllEndpointsAsync();
 
-            if (response == null || response.Count == 0) Console.WriteLine("Não existem endpoints cadastrados.");
+            if (response == null || response.Count == 0) Console.WriteLine("There aren't endpoints registered.");
             else
             {
                 foreach (Endpoint endpoint in response)
@@ -134,9 +134,11 @@ namespace EnergyManager.Presentation.Views
         private async Task InsertEndpointAsync()
         {
             Console.WriteLine("Please insert the endpoint data: \n");
-            var endpoint = GetEndpointData();
 
-            var httpStatusCode = await HttpService.InsertEndpoint(endpoint);
+            bool isUpdate = false;
+            var endpoint = GetEndpointData(isUpdate);
+
+            var httpStatusCode = await HttpService.InsertEndpointAsync(endpoint);
 
             if (httpStatusCode == HttpStatusCode.NoContent)
                 Console.WriteLine("Endpoint added successful.");
@@ -158,19 +160,21 @@ namespace EnergyManager.Presentation.Views
                 ListSingleEndpointData(response);
                 Console.WriteLine();
 
-                var endpointDataToUpdate = GetEndpointData();
+                bool isUpdate = true;
+                var endpointDataToUpdate = GetEndpointData(isUpdate);
+                endpointDataToUpdate.SerialNumber = serialNumber;
 
-                var httpStatusCode = await HttpService.UpdateEndpoint(endpointDataToUpdate);
+                var httpStatusCode = await HttpService.UpdateEndpointAsync(endpointDataToUpdate);
 
-                if (httpStatusCode == HttpStatusCode.BadRequest) 
+                if (httpStatusCode == HttpStatusCode.BadRequest)
                     Console.WriteLine("Problem with the data, please check it and try again.");
-                else if (httpStatusCode == HttpStatusCode.NoContent) 
+                else if (httpStatusCode == HttpStatusCode.NoContent)
                     Console.WriteLine("Endpoint updated with success.");
                 else
                     Console.WriteLine("An unexpected problem ocurred, please contact the support.");
 
             }
-            
+
         }
 
         private string GetSerialNumber()
@@ -190,11 +194,11 @@ namespace EnergyManager.Presentation.Views
 
             if (confirmDelete == true)
             {
-                var response = await HttpService.DeleteEndpointAsync(new EndpointDeleteDto() { SerialNumber = serialNumber});
+                var response = await HttpService.DeleteEndpointAsync(new EndpointDeleteDto() { SerialNumber = serialNumber });
 
-                if (response == HttpStatusCode.NotFound) 
+                if (response == HttpStatusCode.NotFound)
                     Console.WriteLine("Endpoint doesn't exist, check the Serial Number and try again");
-                else if (response == HttpStatusCode.NoContent) 
+                else if (response == HttpStatusCode.NoContent)
                     Console.WriteLine("Endpoint deleted with sucess.");
                 else
                     Console.WriteLine("An unexpected problem ocurred, please contact the support.");
@@ -217,18 +221,22 @@ namespace EnergyManager.Presentation.Views
             return false;
         }
 
-        private Endpoint GetEndpointData()
+        private Endpoint GetEndpointData(bool isUpdate)
         {
             Endpoint endpoint = new Endpoint();
             endpoint.Meter = new Meter();
             bool isDataValid = false;
 
             while (!isDataValid)
+            {
                 try
                 {
-                    Console.WriteLine("Endpoint Serial Number: ");
-                    endpoint.SerialNumber = Console.ReadLine();
-                    Console.WriteLine("Endpoint Serial Number: ");
+                    if (isUpdate == false)
+                    {
+                        Console.WriteLine("Endpoint Serial Number: ");
+                        endpoint.SerialNumber = Console.ReadLine();
+                    }
+                    Console.WriteLine("Endpoint Model Id: ");
                     endpoint.Meter.ModelId = int.Parse(Console.ReadLine());
                     Console.WriteLine("Endpoint Meter Number: ");
                     endpoint.Meter.Number = int.Parse(Console.ReadLine());
@@ -242,7 +250,7 @@ namespace EnergyManager.Presentation.Views
                 {
                     Console.WriteLine("Erro ao receber dados, por favor, insira dados válidos.");
                 }
-
+            }
             return endpoint;
         }
     }

@@ -19,13 +19,12 @@ namespace EnergyManager.Presentation.Services
         { 
             BaseAddress = baseAddress;
             HttpClient = new HttpClient();
-            HttpClient.BaseAddress = new Uri("http://localhost:64195/");
             HttpClient.DefaultRequestHeaders.Accept.Clear();
             HttpClient.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        public async Task<ICollection<Endpoint>> GetAllEndpoints()
+        public async Task<ICollection<Endpoint>> GetAllEndpointsAsync()
         {
             var response = await HttpClient.GetAsync($@"{BaseAddress}/api/Endpoint/GetAllEndpoints");
 
@@ -52,16 +51,16 @@ namespace EnergyManager.Presentation.Services
             return result;
         }
 
-        public async Task<HttpStatusCode> InsertEndpoint(object endpoint)
+        public async Task<HttpStatusCode> InsertEndpointAsync(object endpoint)
         {
             var contentString = JsonConvert.SerializeObject(endpoint);
             var content = new StringContent(contentString.ToString(), Encoding.UTF8, "application/json");
-            var response = await HttpClient.PostAsync($@"{BaseAddress}/api/Endpoint/InsertEndpointAsync", content);
+            var response = await HttpClient.PostAsync($@"{BaseAddress}/api/Endpoint/InsertEndpoint", content);
 
             return response.StatusCode;
         }
 
-        public async Task<HttpStatusCode> UpdateEndpoint(object endpoint)
+        public async Task<HttpStatusCode> UpdateEndpointAsync(object endpoint)
         {
             var contentString = JsonConvert.SerializeObject(endpoint);
             var content = new StringContent(contentString.ToString(), Encoding.UTF8, "application/json");
