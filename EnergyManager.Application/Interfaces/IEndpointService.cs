@@ -10,7 +10,7 @@ namespace EnergyManager.Application.Interfaces
 {
     public interface IEndpointService
     {
-        Task<IEnumerable<EndpointDtoResponse>> GetAllAsync();
+        Task<List<EndpointDtoResponse>> GetAllAsync();
         Task<EndpointDtoResponse> GetEndpointBySerialNumberWithMeterAsync(string serialNumber);
         Task<EndpointDtoResponse> AddAsync(EndpointDto entity);
         Task<EndpointDtoResponse> UpdateAsync(EndpointUpdateDto entity);

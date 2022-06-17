@@ -29,6 +29,7 @@ namespace EnergyManager.Application.Profiles
                     .MapFrom(value => value.Meter.Number))
                 .ForPath(member => member.Meter.FirmwareVersion, opt => opt
                     .MapFrom(value => value.Meter.FirmwareVersion));
+            CreateMap<Endpoint, EndpointDto>();
 
             CreateMap<MeterDto, Meter>().ReverseMap();
         }

@@ -42,10 +42,10 @@ namespace EnergyManager.Application.Services
             await _endpointRepository.DeleteAsync(entity);
         }
 
-        public async Task<IEnumerable<EndpointDtoResponse>> GetAllAsync()
+        public async Task<List<EndpointDtoResponse>> GetAllAsync()
         {
             var endpoints = await _endpointRepository.GetAllAsync();
-            return _mapper.Map<IEnumerable<EndpointDtoResponse>>(endpoints);
+            return _mapper.Map<List<EndpointDtoResponse>>(endpoints);
         }
 
         public async Task<EndpointDtoResponse> GetEndpointBySerialNumberWithMeterAsync(string serialNumber)
