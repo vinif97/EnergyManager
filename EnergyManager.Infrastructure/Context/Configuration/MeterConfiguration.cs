@@ -9,6 +9,8 @@ namespace EnergyManager.Infrastructure.Context.Configuration
         public override void Configure(EntityTypeBuilder<Meter> builder)
         {
             builder.HasKey(m => m.MeterId);
+            builder.Property(m => m.MeterId).ValueGeneratedOnAdd();
+            builder.Property(m => m.ModelId);
             builder.Property(m => m.Number).IsRequired();
             builder.Property(m => m.FirmwareVersion).IsRequired();
             base.Configure(builder);

@@ -3,6 +3,7 @@
     public class Meter : BaseEntity
     {
         public int MeterId { get; set; }
+        public int ModelId { get; set; }
         public int Number { get; set; }
         public string FirmwareVersion { get; set; }
 

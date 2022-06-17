@@ -44,7 +44,7 @@ namespace EnergyManager.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> InsertEndpoint([SerialNumberValidator] EndpointDto endpointDto)
+        public async Task<IActionResult> InsertEndpoint([SwitchStateValidator] EndpointDto endpointDto)
         {
             var endpointResponse = await _endpointService.AddAsync(endpointDto);
 
@@ -54,7 +54,7 @@ namespace EnergyManager.Web.Controllers
         }
 
         [HttpPatch]
-        public async Task<IActionResult> UpdateEndpoint([SerialNumberValidator] EndpointUpdateDto endpointDto)
+        public async Task<IActionResult> UpdateEndpoint([SwitchStateValidator] EndpointUpdateDto endpointDto)
         {
             var endpointResponse = await _endpointService.UpdateAsync(endpointDto);
 

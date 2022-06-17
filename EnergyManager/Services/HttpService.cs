@@ -47,7 +47,7 @@ namespace EnergyManager.Presentation.Services
             string endpoint = await response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<Endpoint>(endpoint);
 
-            if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+            if (response.StatusCode == HttpStatusCode.NotFound)
                 return null;
             return result;
         }
@@ -57,6 +57,15 @@ namespace EnergyManager.Presentation.Services
             var contentString = JsonConvert.SerializeObject(endpoint);
             var content = new StringContent(contentString.ToString(), Encoding.UTF8, "application/json");
             var response = await HttpClient.PostAsync($@"{BaseAddress}/api/Endpoint/InsertEndpointAsync", content);
+
+            return response.StatusCode;
+        }
+
+        public async Task<HttpStatusCode> UpdateEndpoint(object endpoint)
+        {
+            var contentString = JsonConvert.SerializeObject(endpoint);
+            var content = new StringContent(contentString.ToString(), Encoding.UTF8, "application/json");
+            var response = await HttpClient.PatchAsync($@"{BaseAddress}/api/Endpoint/UpdateEndpoint", content);
 
             return response.StatusCode;
         }

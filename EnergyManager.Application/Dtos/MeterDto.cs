@@ -9,6 +9,7 @@ namespace EnergyManager.Application.Dtos
     public class MeterDto
     {
         public int MeterId { get; set; }
+        public int ModelId { get; set; }
         [Required]
         public int Number { get; set; }
         [Required]

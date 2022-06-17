@@ -14,8 +14,8 @@ namespace EnergyManager.Application.Profiles
         public DomainToDtoProfile()
         {
             CreateMap<EndpointDto, Endpoint>()
-                .ForPath(member => member.Meter.MeterId, opt => opt
-                    .MapFrom(value => EndpointDictionary.endpoints[value.SerialNumber]))
+                .ForPath(member => member.Meter.ModelId, opt => opt
+                    .MapFrom(value => EndpointDictionary.endpoints.ContainsKey(value.SerialNumber) ? EndpointDictionary.endpoints[value.SerialNumber] : value.Meter.ModelId))
                 .ForPath(member => member.Meter.Number, opt => opt
                     .MapFrom(value => value.Meter.Number))
                 .ForPath(member => member.Meter.FirmwareVersion, opt => opt
@@ -23,12 +23,12 @@ namespace EnergyManager.Application.Profiles
                     
             CreateMap<Endpoint, EndpointDtoResponse>();
             CreateMap<EndpointUpdateDto, Endpoint>()
-                .ForPath(member => member.Meter.MeterId, opt => opt
-                    .MapFrom(value => EndpointDictionary.endpoints[value.SerialNumber]))
+                .ForPath(member => member.Meter.ModelId, opt => opt
+                    .MapFrom(value => EndpointDictionary.endpoints.ContainsKey(value.SerialNumber) ? EndpointDictionary.endpoints[value.SerialNumber] : value.Meter.ModelId))
                 .ForPath(member => member.Meter.Number, opt => opt
                     .MapFrom(value => value.Meter.Number))
                 .ForPath(member => member.Meter.FirmwareVersion, opt => opt
-                    .MapFrom(value => value.Meter.FirmwareVersion)); ;
+                    .MapFrom(value => value.Meter.FirmwareVersion));
 
             CreateMap<MeterDto, Meter>().ReverseMap();
         }
