@@ -56,7 +56,7 @@ namespace EnergyManager.Presentation.Views
                     await InsertEndpointAsync();
                     break;
                 case 2:
-
+                    await UpdateEndpointAsync();
                     break;
                 case 3:
                     await DeleteEndpointAsync();
@@ -133,12 +133,17 @@ namespace EnergyManager.Presentation.Views
 
         private async Task InsertEndpointAsync()
         {
+            Console.WriteLine("Please insert the endpoint data: \n");
             var endpoint = GetEndpointData();
 
             var httpStatusCode = await HttpService.InsertEndpoint(endpoint);
 
-            if (httpStatusCode == HttpStatusCode.NoContent) Console.WriteLine("Endpoint added successful.");
-            else if (httpStatusCode == HttpStatusCode.BadRequest) Console.WriteLine("Invalid data, endpoint could not be inserted in the database.");
+            if (httpStatusCode == HttpStatusCode.NoContent)
+                Console.WriteLine("Endpoint added successful.");
+            else if (httpStatusCode == HttpStatusCode.BadRequest)
+                Console.WriteLine("Invalid data, endpoint could not be inserted in the database.");
+            else
+                Console.WriteLine("An unexpected problem ocurred, please contact the support.");
         }
 
         private async Task UpdateEndpointAsync()
@@ -149,7 +154,7 @@ namespace EnergyManager.Presentation.Views
             if (response == null) Console.WriteLine("There is no endpoint registered with this serial number");
             else
             {
-                Console.WriteLine("\n This is your endpoint, please enter the new data:");
+                Console.WriteLine("\nThis is your endpoint, please enter the new data:\n");
                 ListSingleEndpointData(response);
                 Console.WriteLine();
 
@@ -157,7 +162,13 @@ namespace EnergyManager.Presentation.Views
 
                 var httpStatusCode = await HttpService.UpdateEndpoint(endpointDataToUpdate);
 
-                if (httpStatusCode == HttpStatusCode.BadRequest) Console.WriteLine("Problem with the data, please check it and try again");
+                if (httpStatusCode == HttpStatusCode.BadRequest) 
+                    Console.WriteLine("Problem with the data, please check it and try again.");
+                else if (httpStatusCode == HttpStatusCode.NoContent) 
+                    Console.WriteLine("Endpoint updated with success.");
+                else
+                    Console.WriteLine("An unexpected problem ocurred, please contact the support.");
+
             }
             
         }
@@ -181,8 +192,12 @@ namespace EnergyManager.Presentation.Views
             {
                 var response = await HttpService.DeleteEndpointAsync(new EndpointDeleteDto() { SerialNumber = serialNumber});
 
-                if (response == HttpStatusCode.NotFound) Console.WriteLine("Endpoint doesn't exist, check the Serial Number and try again");
-                else if (response == HttpStatusCode.NoContent) Console.WriteLine("Endpoint deleted with sucess.");
+                if (response == HttpStatusCode.NotFound) 
+                    Console.WriteLine("Endpoint doesn't exist, check the Serial Number and try again");
+                else if (response == HttpStatusCode.NoContent) 
+                    Console.WriteLine("Endpoint deleted with sucess.");
+                else
+                    Console.WriteLine("An unexpected problem ocurred, please contact the support.");
             }
         }
 
@@ -211,9 +226,10 @@ namespace EnergyManager.Presentation.Views
             while (!isDataValid)
                 try
                 {
-                    Console.WriteLine("Please insert the endpoint data: \n");
                     Console.WriteLine("Endpoint Serial Number: ");
                     endpoint.SerialNumber = Console.ReadLine();
+                    Console.WriteLine("Endpoint Serial Number: ");
+                    endpoint.Meter.ModelId = int.Parse(Console.ReadLine());
                     Console.WriteLine("Endpoint Meter Number: ");
                     endpoint.Meter.Number = int.Parse(Console.ReadLine());
                     Console.WriteLine("Endpoint Meter FirmwareVersion: ");

@@ -19,7 +19,7 @@ namespace EnergyManager.Infrastructure.Repository
             return endpoint;
         }
 
-        public override async Task<IEnumerable<Endpoint>> GetAllAsync()
+        public override async Task<List<Endpoint>> GetAllAsync()
         {
             var endpoints = await _context.Set<Endpoint>().Include(a => a.Meter).ToListAsync();
             return endpoints;

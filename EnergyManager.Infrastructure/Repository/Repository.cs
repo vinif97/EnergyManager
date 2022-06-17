@@ -32,7 +32,7 @@ namespace EnergyManager.Infrastructure.Repository
             await _context.SaveChangesAsync();
         }
 
-        public virtual async Task<IEnumerable<T>> GetAllAsync()
+        public virtual async Task<List<T>> GetAllAsync()
         {
             var entities = await _context.Set<T>().AsNoTracking().ToListAsync();
             return entities;

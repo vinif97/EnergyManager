@@ -1,6 +1,4 @@
-﻿using EnergyManager.Domain.Validation;
-
-namespace EnergyManager.Domain.Models
+﻿namespace EnergyManager.Domain.Models
 {
     public class Endpoint : BaseEntity
     {
