@@ -12,7 +12,7 @@ namespace EnergyManager.Application.Dtos
         [Required]
         public string SerialNumber { get; set; }
         [Required]
-        public int SwtichState { get; set; }
+        public int SwitchState { get; set; }
         [Required]
         public MeterDto Meter { get; set; }
     }

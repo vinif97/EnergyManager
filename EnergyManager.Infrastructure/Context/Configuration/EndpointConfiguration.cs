@@ -10,7 +10,7 @@ namespace EnergyManager.Infrastructure.Context.Configuration
         {
             builder.HasKey(e => e.EndpointId);
             builder.Property(e => e.EndpointId).ValueGeneratedOnAdd();
-            builder.Property(e => e.SwtichState).IsRequired();
+            builder.Property(e => e.SwitchState).IsRequired();
             builder.Property(e => e.SerialNumber).IsRequired();
             builder.HasIndex(e => e.SerialNumber).IsUnique();
             base.Configure(builder);

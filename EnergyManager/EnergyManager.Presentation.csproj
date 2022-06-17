@@ -6,7 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EnergyManager.Test\EnergyManager.Test.csproj" />
+    <ProjectReference Include="..\EnergyManager.Application\EnergyManager.Application.csproj" />
+    <ProjectReference Include="..\EnergyManager.Domain\EnergyManager.Domain.csproj" />
+    <ProjectReference Include="..\EnergyManager.Infrastructure\EnergyManager.Infrastructure.csproj" />
+    <ProjectReference Include="..\EnergyManager.Web\EnergyManager.Web.csproj" />
   </ItemGroup>
 
 </Project>

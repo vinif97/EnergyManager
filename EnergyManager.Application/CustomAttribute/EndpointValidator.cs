@@ -1,29 +1,27 @@
-﻿using EnergyManager.Domain.Models;
-using System;
-using System.Collections.Generic;
+﻿using EnergyManager.Application.Dtos;
+using EnergyManager.Application.Helper;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace EnergyManager.Application.CustomAttribute
 {
-    public class EndpointValidator : ValidationAttribute
+    public class SerialNumberValidator : ValidationAttribute
     {
-        private const string DefaultErrorMessage = "Endpoint com formatação incorreta. Verifique os dados enviados.";
-        //protected override ValidationResult IsValid(Endpoint value, ValidationContext validationContext)
-        //{
-        //    bool isSerialNumberValid = value.SerialNumber
+        private const string DefaultErrorMessage = "Invalid serial number.";
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            var endpoint = (dynamic)value;
+            bool isSerialNumberValid = EndpointDictionary.endpoints.ContainsKey(endpoint.SerialNumber);
 
-        //    if ()
-
-        //    if ()
-        //    {
-        //        return ValidationResult.Success;
-        //    }
-        //    else
-        //    {
-        //        return new ValidationResult(ErrorMessage ??
-        //                                    DefaultErrorMessage);
-        //    }
-        //}
+            if (isSerialNumberValid)
+            {
+                return ValidationResult.Success;
+            }
+            else
+            {
+                return new ValidationResult(ErrorMessage ??
+                                            DefaultErrorMessage);
+            }
+        }
     }
 }

@@ -26,6 +26,12 @@ namespace EnergyManager.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(o => o.AddPolicy("EnergyPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
             services.AddDbContext<EnergyManagerContext>(opt => opt.UseInMemoryDatabase("EnergyManagerDB"));
             services.AddControllers();
             services.AddSwaggerGen(c =>

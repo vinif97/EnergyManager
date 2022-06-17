@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EnergyManager.Application.CustomAttribute;
 using EnergyManager.Application.Dtos;
 using EnergyManager.Application.Dtos.Response;
 using EnergyManager.Application.Interfaces;
@@ -27,7 +28,7 @@ namespace EnergyManager.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> GetEndpointBySerialNumber(string serialNumber)
         {
-            var endpoint = await _endpointService.GetEndpointBySerialNumberWithMeter(serialNumber);
+            var endpoint = await _endpointService.GetEndpointBySerialNumberWithMeterAsync(serialNumber);
             
             if (endpoint == null) return NotFound();
 
@@ -43,17 +44,17 @@ namespace EnergyManager.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> InsertEndpoint(EndpointDto endpointDto)
+        public async Task<IActionResult> InsertEndpoint([SerialNumberValidator] EndpointDto endpointDto)
         {
             var endpointResponse = await _endpointService.AddAsync(endpointDto);
 
-            if (endpointResponse != null) return Ok(endpointResponse);
+            if (endpointResponse != null) return NoContent();
 
             return BadRequest("Entity already Exist.");
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateEndpoint(EndpointUpdateDto endpointDto)
+        [HttpPatch]
+        public async Task<IActionResult> UpdateEndpoint([SerialNumberValidator] EndpointUpdateDto endpointDto)
         {
             var endpointResponse = await _endpointService.UpdateAsync(endpointDto);
 
@@ -63,16 +64,12 @@ namespace EnergyManager.Web.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteEndpoint(EndpointDto endpointDto)
+        public async Task<IActionResult> DeleteEndpoint(EndpointDeleteDto endpointDeleteDto)
         {
-            try
-            {
-                await _endpointService.DeleteAsync(endpointDto);
-            }
-            catch (Exception ex)
-            {
-                return NotFound(ex.Message);
-            }
+            var endpoint = await _endpointService.GetEndpointBySerialNumberWithMeterForDeleteAsync(endpointDeleteDto.SerialNumber);
+            if (endpoint == null) return NotFound();
+
+            await _endpointService.DeleteAsync(endpoint);
 
             return NoContent();
         }

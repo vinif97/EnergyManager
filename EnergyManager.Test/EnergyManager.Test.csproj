@@ -19,4 +19,12 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\EnergyManager.Application\EnergyManager.Application.csproj" />
+    <ProjectReference Include="..\EnergyManager.Domain\EnergyManager.Domain.csproj" />
+    <ProjectReference Include="..\EnergyManager.Infrastructure\EnergyManager.Infrastructure.csproj" />
+    <ProjectReference Include="..\EnergyManager.Web\EnergyManager.Web.csproj" />
+    <ProjectReference Include="..\EnergyManager\EnergyManager.Presentation.csproj" />
+  </ItemGroup>
+
 </Project>

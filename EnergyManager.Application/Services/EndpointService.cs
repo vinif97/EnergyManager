@@ -37,12 +37,9 @@ namespace EnergyManager.Application.Services
             return null;
         }
 
-        public async Task DeleteAsync(EndpointDto entity)
+        public async Task DeleteAsync(Endpoint entity)
         {
-            var endpoint = await _endpointRepository.GetEndpointBySerialNumberWithMeter(entity.SerialNumber);
-
-            if (endpoint != null) await _endpointRepository.DeleteAsync(endpoint);
-            else throw new Exception("Endpoint doesn't exist");
+            await _endpointRepository.DeleteAsync(entity);
         }
 
         public async Task<IEnumerable<EndpointDtoResponse>> GetAllAsync()
@@ -51,10 +48,16 @@ namespace EnergyManager.Application.Services
             return _mapper.Map<IEnumerable<EndpointDtoResponse>>(endpoints);
         }
 
-        public async Task<EndpointDtoResponse> GetEndpointBySerialNumberWithMeter(string serialNumber)
+        public async Task<EndpointDtoResponse> GetEndpointBySerialNumberWithMeterAsync(string serialNumber)
         {
             var endpoint = await _endpointRepository.GetEndpointBySerialNumberWithMeter(serialNumber);
             return _mapper.Map<EndpointDtoResponse>(endpoint);
+        }
+
+        public async Task<Endpoint> GetEndpointBySerialNumberWithMeterForDeleteAsync(string serialNumber)
+        {
+            var endpoint = await _endpointRepository.GetEndpointBySerialNumberWithMeter(serialNumber);
+            return endpoint;
         }
 
         public async Task<EndpointDtoResponse> UpdateAsync(EndpointUpdateDto endpointDto)

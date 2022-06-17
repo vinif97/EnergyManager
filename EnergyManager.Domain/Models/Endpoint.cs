@@ -6,15 +6,8 @@ namespace EnergyManager.Domain.Models
     {
         public int EndpointId { get; set; }
         public string SerialNumber { get; set; }
-        public int SwtichState { get; set; }
+        public int SwitchState { get; set; }
 
         public Meter Meter { get; set; }
-
-        //private int ValidateSwitchState(int switchState)
-        //{
-        //    bool isSwitchStateValide = (switchState >= 0 || switchState <= 2);
-        //    DomainExceptionValidation.ValidateDomain(isSwitchStateValide, "Invalid switch.");
-        //    return switchState;
-        //}
     }
 }

@@ -5,11 +5,9 @@ using System.Text;
 
 namespace EnergyManager.Application.Dtos
 {
-    public class EndpointUpdateDto
+    public class EndpointDeleteDto
     {
         [Required]
         public string SerialNumber { get; set; }
-        public int SwitchState { get; set; }
-        public MeterDto Meter { get; set; }
     }
 }

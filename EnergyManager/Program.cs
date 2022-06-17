@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EnergyManager.Presentation.Views;
+using System;
 
 namespace EnergyManager.Presentation
 {
@@ -6,7 +7,16 @@ namespace EnergyManager.Presentation
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var userInterface = new UserInterface();
+            bool continueProgram = true;
+
+            while (continueProgram)
+            {
+                int continueInterface = userInterface.ShowOptionsAsync().Result;
+                if (continueInterface == 6) continueProgram = false;
+            }
+
+            Console.WriteLine("Have a good day.");
         }
     }
 }

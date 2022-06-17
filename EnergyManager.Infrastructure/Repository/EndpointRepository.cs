@@ -15,19 +15,19 @@ namespace EnergyManager.Infrastructure.Repository
 
         public async Task<Endpoint> GetEndpointBySerialNumberWithMeter(string serialNumber)
         {
-            var endpoint = await _context.Set<Endpoint>().AsNoTracking().Include(a => a.Meter).FirstOrDefaultAsync(a => a.SerialNumber == serialNumber);
+            var endpoint = await _context.Set<Endpoint>().Include(a => a.Meter).FirstOrDefaultAsync(a => a.SerialNumber == serialNumber);
             return endpoint;
         }
 
         public override async Task<IEnumerable<Endpoint>> GetAllAsync()
         {
-            var endpoints = await _context.Set<Endpoint>().AsNoTracking().Include(a => a.Meter).ToListAsync();
+            var endpoints = await _context.Set<Endpoint>().Include(a => a.Meter).ToListAsync();
             return endpoints;
         }
 
         public async Task<Endpoint> GetEndpointBySerialNumber(string serialNumber)
         {
-            var endpoint = await _context.Set<Endpoint>().AsNoTracking().FirstOrDefaultAsync(a => a.SerialNumber == serialNumber);
+            var endpoint = await _context.Set<Endpoint>().FirstOrDefaultAsync(a => a.SerialNumber == serialNumber);
             return endpoint;
         }
     }
